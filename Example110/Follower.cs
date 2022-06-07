@@ -21,50 +21,41 @@ Methods:
 
 namespace Movement
 {
-	class Follower : SpriteNode
-	{
-		// your private fields here (add Velocity, Acceleration, and MaxSpeed)
+    class Follower : MoverNode
+    {
+        // your private fields here (add Velocity, Acceleration, and MaxSpeed)
 
 
-		// constructor + call base constructor
-		public Follower() : base("resources/ball.png")
-		{
-			Position = new Vector2(Settings.ScreenSize.X / 2, Settings.ScreenSize.Y / 2);
-			Color = Color.GREEN;
-		}
+        // constructor + call base constructor
+        public Follower() : base("resources/ball.png")
+        {
+            Position = new Vector2(Settings.ScreenSize.X / 2, Settings.ScreenSize.Y / 2);
+            Color = Color.GREEN;
+        }
 
-		// Update is called every frame
-		public override void Update(float deltaTime)
-		{
-			Follow(deltaTime);
-			BounceEdges();
-		}
+        // Update is called every frame
+        public override void Update(float deltaTime)
+        {
+            Follow(deltaTime);
+            Move(deltaTime);
+        }
 
-		// your own private methods
-		private void Follow(float deltaTime)
-		{
-			Vector2 mouse = Raylib.GetMousePosition();
-			// Console.WriteLine(mouse);
-			
-			Position = mouse; // incorrect!!
+        // your own private methods
+        private void Follow(float deltaTime)
+        {
+            Vector2 mouse = Raylib.GetMousePosition();
+            // Console.WriteLine(mouse);
 
-			// TODO implement
-			// Position += Velocity * deltaTime;
-		}
+            // Position = mouse; // incorrect!!
 
-		private void BounceEdges()
-		{
-			float scr_width = Settings.ScreenSize.X;
-			float scr_height = Settings.ScreenSize.Y;
-			float spr_width = TextureSize.X;
-			float spr_heigth = TextureSize.Y;
+            Vector2 dir = mouse - Position;
 
-			// TODO implement...
-			if (Position.X > scr_width)
-			{
-				// ...
-			}
-		}
+            Vector2.Normalize(dir);
 
-	}
+            Acceleration = dir;
+            Acceleration *= 10;
+            // TODO implement
+            // Position += Velocity * deltaTime;
+        }
+    }
 }
