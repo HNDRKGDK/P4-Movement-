@@ -1,3 +1,4 @@
+using System;
 using System.Numerics; // Vector2
 using Raylib_cs; // Color
 
@@ -23,7 +24,9 @@ namespace Movement
     class AcceleratingBall : SpriteNode
     {
         // your private fields here (add Velocity, Acceleration, and MaxSpeed)
-
+        private Vector2 Velocity = new Vector2(0, 0);
+        private Vector2 Acceleration = new Vector2(0, 0);
+        private float MaxSpeed = 800;
 
         // constructor + call base constructor
         public AcceleratingBall() : base("resources/ball.png")
@@ -35,18 +38,41 @@ namespace Movement
         // Update is called every frame
         public override void Update(float deltaTime)
         {
+            Acceleration = new Vector2(80, 60);
+
             Move(deltaTime);
-            BounceEdges();
+            wrapEdges();
+
+            Velocity = Limit(Velocity, MaxSpeed);
+            Console.WriteLine(Velocity.Length());
         }
 
         // your own private methods
         private void Move(float deltaTime)
         {
             // TODO implement
-            // Position += Velocity * deltaTime;
+            Velocity += Acceleration * deltaTime;
+            Position += Velocity * deltaTime;
+
+
+
+            // Velocity.add(Acceleration);
         }
 
-        private void BounceEdges()
+        private Vector2 Limit(Vector2 vec, float max)
+        {
+            Vector2 limited = vec;
+
+            if (vec.Length() > max)
+            {
+                limited = Vector2.Normalize(vec);
+                limited = limited * max;
+            }
+
+            return limited;
+        }
+
+        private void wrapEdges()
         {
             float scr_width = Settings.ScreenSize.X;
             float scr_height = Settings.ScreenSize.Y;
@@ -56,7 +82,20 @@ namespace Movement
             // TODO implement...
             if (Position.X > scr_width)
             {
-                // ...
+                Position.X = 0;
+            }
+            else if (Position.X < 0)
+            {
+                Position.X = scr_width;
+            }
+
+            if (Position.Y > scr_height)
+            {
+                Position.Y = 0;
+            }
+            else if (Position.Y < 0)
+            {
+                Position.Y = scr_width;
             }
         }
 
