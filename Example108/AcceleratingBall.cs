@@ -42,12 +42,19 @@ namespace Movement
 
             Move(deltaTime);
             wrapEdges();
+            Limit(Velocity, MaxSpeed);
 
-            Velocity = Limit(Velocity, MaxSpeed);
+            // Velocity = Limit(Velocity, MaxSpeed);
             Console.WriteLine(Velocity.Length());
+
+            // if (Velocity.Length() > MaxSpeed)
+            // {
+            //     Velocity = Vector2.Normalize(Velocity);
+            //     Velocity *= MaxSpeed;
+            // }
+
         }
 
-        // your own private methods
         private void Move(float deltaTime)
         {
             // TODO implement
@@ -58,7 +65,7 @@ namespace Movement
 
             // Velocity.add(Acceleration);
         }
-
+        
         private Vector2 Limit(Vector2 vec, float max)
         {
             Vector2 limited = vec;
@@ -98,6 +105,5 @@ namespace Movement
                 Position.Y = scr_width;
             }
         }
-
     }
 }

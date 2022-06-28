@@ -40,17 +40,24 @@ namespace Movement
             Move(deltaTime);
         }
 
+        private Vector2 Limit(Vector2 vec, float max)
+        {
+            Vector2 limited = vec;
+
+            if (vec.Length() > max)
+            {
+                limited = Vector2.Normalize(vec);
+                limited = limited * max;
+            }
+
+            return limited;
+        }
+
         // your own private methods
         private void Follow(float deltaTime)
         {
             Vector2 mouse = Raylib.GetMousePosition();
-            // Console.WriteLine(mouse);
-
-            // Position = mouse; // incorrect!!
-
             Vector2 dir = mouse - Position;
-
-            Vector2.Normalize(dir);
 
             Acceleration = dir;
             Acceleration *= 10;
